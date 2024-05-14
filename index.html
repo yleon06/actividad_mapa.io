@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Mapa de Colombia</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        path {
+            fill: steelblue;
+            stroke: white;
+            stroke-width: 0.5;
+        }
+        path:hover {
+            fill: orange;
+        }
+    </style>
+</head>
+<body>
+<h1>Poblacion de Colombia en el 2018</h1>
+
+<h3>Actividad desarollada por: Yeiner Leon</h3>
+
+<P>
+<script>
+    var width = 800, height = 600;
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var projection = d3.geoMercator()
+        .scale(1500)
+        .center([-74, 4])
+        .translate([width / 2, height / 2]);
+
+    var path = d3.geoPath().projection(projection);
+
+    d3.json("Colombia.geojson").then(function(data) {
+        svg.selectAll("path")
+            .data(data.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr("fill", "steelblue")
+            .on("mouseover", function() {
+                d3.select(this).transition().duration(100).style("fill", "orange");
+            })
+            .on("mouseout", function() {
+                d3.select(this).transition().duration(100).style("fill", "steelblue");
+            });3118200085
+    });
+</script>
+</body>
+</html>
